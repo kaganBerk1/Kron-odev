@@ -1,0 +1,55 @@
+#!/bin/bash
+
+print_time(){
+	date +"%Y-%m-%d %T.%3N"
+}
+
+print_time
+
+log(){
+	echo "$(print_time) $1" >> script.log
+}
+
+log "Başladı "
+
+getUser(){
+	read -p "Lütfen ismini gir: " username
+	log "kullanıcı: $username"
+}
+
+getUser
+
+step1(){
+	echo "adım 1: örnek dosyalar oluştur""adım 1: örnek dosyalar oluştur"
+	log "adım 1: örnek dosyalar oluştur"
+	touch deneme1.txt deneme2.txt deneme3.txt deneme4.txt deneme5.txt
+}
+
+step2(){
+	echo "adım 2: deneme1.txt dosyasının tarihi 2 gün öncere alınıyor"
+	log "adım 2: deneme1.txt dosyasının tarihi 2 gün öncere alınıyor"
+	touch -d "2 day ago" deneme1.txt
+	touch -d "2 day ago" deneme5.txt
+}
+
+
+step3(){
+	echo "adım 3: bir günden eski dostlar sıkıştırılıyor yedenekleniyor."
+	log "adım 3: bir günden eski dostlar sıkıştırılıyor yedenekleniyor."
+	find  -maxdepth 1 -type f -name "*.txt" -mtime +1 -exec tar -czvf backups.tar.gz --no-recursion {} +
+	log "Yedek dosyalar oluşturuldu: backup.tar.gz"
+}
+
+step4(){
+	echo "adım 4: yedeklenne dosyalar siliniyor"
+	log "adım 4: yedeklenne dosyalar siliniyor"
+	rm *.txt
+}
+
+step1
+step2
+step3
+step4
+
+log "Bitti"
+echo "it finished"
